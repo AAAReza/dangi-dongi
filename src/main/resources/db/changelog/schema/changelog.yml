@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-user
+      author: Reza Afzali
+      changes:
+        - createTable:
+            tableName: TB_USER
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: user_pk
+                  name: id
+                  type: NUMBER(19)
+              - column:
+                  name: USERNAME
+                  type: varchar2(50)
+              - column:
+                  name: FIRSTNAME
+                  type: varchar2(50)
+              - column:
+                  name: LASTNAME
+                  type: varchar2(50)
+              - column:
+                  name: EMAIL
+                  type: varchar2(50)
+              - column:
+                  name: PASSWORD
+                  type: varchar2(60)
+              - column:
+                  name: PHONE
+                  type: NUMBER(12)
+
+              - column:
+                  name: GENDER
+                  type: varchar2(6)
+
+              - column:
+                  name: BIRTHDAY
+                  type: TIMESTAMP(6)
+              - column:
+                  name: CREATION_TIME
+                  type: TIMESTAMP(6)
+
+        - createSequence:
+            sequenceName: TB_USER_SEQ
+            incrementBy: 50
+            startValue: 0
