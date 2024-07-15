@@ -1,5 +1,6 @@
 package com.snapp.dangidongi.model;
 
+import com.snapp.dangidongi.entity.Gender;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class UserModel {
     @NotNull
     private String password;
     private Long phone;
-    private String gender;
+    private Gender gender;
     private LocalDate birthday;
     private LocalDateTime creationTime;
 }

@@ -25,7 +25,7 @@ public class UserEntity {
     private String email;
     private String password;
     private Long phone;
-    private String gender;
+    private Gender gender;
     private LocalDate birthday;
     @CreationTimestamp
     private LocalDateTime creationTime;
