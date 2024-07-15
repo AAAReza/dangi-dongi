@@ -6,9 +6,9 @@ import com.snapp.dangidongi.mapper.UserMapper;
 import com.snapp.dangidongi.model.UserModel;
 import com.snapp.dangidongi.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -28,8 +28,9 @@ public class UserService {
         return userMapper.userEntityToUserModel(user);
     }
 
-    public List<UserModel> findAll() {
-        List<UserEntity> users = userRepository.findAll();
-        return userMapper.userEntitiesToUserModels(users);
+
+    public Page<UserModel> findAll(Pageable pageable) {
+        Page<UserEntity> users = userRepository.findAll(pageable);
+        return users.map(userMapper::userEntityToUserModel);
     }
 }
