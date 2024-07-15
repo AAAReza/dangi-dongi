@@ -5,6 +5,9 @@ import com.snapp.dangidongi.model.UserModel;
 import com.snapp.dangidongi.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -34,10 +37,16 @@ public class UserController {
 
     @SneakyThrows
     @GetMapping(value = Url.USERS_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserModel> getUsers(@PathVariable Long id) {
+    public ResponseEntity<UserModel> getUserById(@PathVariable Long id) {
         UserModel model = userService.findById(id);
         return ResponseEntity.ok(model);
     }
 
+
+    @GetMapping(value = Url.USERS, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<UserModel>> getUsers(@ParameterObject Pageable pageable) {
+        Page<UserModel> models = userService.findAll(pageable);
+        return ResponseEntity.ok(models);
+    }
 
 }
