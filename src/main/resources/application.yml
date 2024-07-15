@@ -10,3 +10,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: none
+  security:
+    user:
+      name: dangi
+      password: dongi
