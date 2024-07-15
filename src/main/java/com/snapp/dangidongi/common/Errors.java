@@ -8,7 +8,9 @@ public enum Errors {
 
 
     INTERNAL_SERVER_ERROR("0001", HttpStatus.INTERNAL_SERVER_ERROR, "Sorry and error occur on server, we fixed it as soon as possible"),
-    RESOURCE_NOT_FOUND("0002", HttpStatus.NOT_FOUND, "The requested resource was not found");
+    RESOURCE_NOT_FOUND("0002", HttpStatus.NOT_FOUND, "The requested resource was not found"),
+    INVALID_REQUEST("0003", HttpStatus.BAD_REQUEST, "The request is invalid"),
+    ;
 
 
     private final String code;
