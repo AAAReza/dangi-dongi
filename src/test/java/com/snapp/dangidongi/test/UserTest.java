@@ -1,5 +1,6 @@
 package com.snapp.dangidongi.test;
 
+import com.snapp.dangidongi.entity.Gender;
 import com.snapp.dangidongi.entity.UserEntity;
 import com.snapp.dangidongi.exception.NotFoundException;
 import com.snapp.dangidongi.model.UserModel;
@@ -21,6 +22,7 @@ public class UserTest {
 
     private UserEntity createAndSaveUser() {
         var userModel = UserModel.builder().firstname("reza")
+                .gender(Gender.MALE)
                 .build();
         return userService.save(userModel);
     }
@@ -30,6 +32,7 @@ public class UserTest {
         var userEntity = createAndSaveUser();
         Assertions.assertNotNull(userEntity.getId());
         Assertions.assertNotNull(userEntity.getCreationTime());
+        Assertions.assertEquals(userEntity.getGender(), Gender.MALE);
     }
 
 

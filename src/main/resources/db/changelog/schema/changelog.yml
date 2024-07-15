@@ -17,6 +17,8 @@ databaseChangeLog:
               - column:
                   name: USERNAME
                   type: varchar2(50)
+                  constraints:
+                    unique: true
               - column:
                   name: FIRSTNAME
                   type: varchar2(50)
@@ -26,13 +28,16 @@ databaseChangeLog:
               - column:
                   name: EMAIL
                   type: varchar2(50)
+                  constraints:
+                    unique: true
               - column:
                   name: PASSWORD
                   type: varchar2(60)
               - column:
                   name: PHONE
                   type: NUMBER(12)
-
+                  constraints:
+                    unique: true
               - column:
                   name: GENDER
                   type: varchar2(6)
