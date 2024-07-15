@@ -1,5 +1,6 @@
 package com.snapp.dangidongi.model;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,11 +11,14 @@ import java.time.LocalDateTime;
 @Builder
 public class UserModel {
     private Long id;
+    @NotNull
+    private String username;
     private String firstname;
     private String lastname;
     private String email;
+    @NotNull
     private String password;
-    private String phone;
+    private Long phone;
     private String gender;
     private LocalDate birthday;
     private LocalDateTime creationTime;

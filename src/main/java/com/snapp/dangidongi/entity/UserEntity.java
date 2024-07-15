@@ -3,7 +3,6 @@ package com.snapp.dangidongi.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,11 +19,12 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String username;
     private String firstname;
     private String lastname;
     private String email;
     private String password;
-    private String phone;
+    private Long phone;
     private String gender;
     private LocalDate birthday;
     @CreationTimestamp

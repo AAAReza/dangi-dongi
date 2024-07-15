@@ -6,10 +6,9 @@ import com.snapp.dangidongi.mapper.UserMapper;
 import com.snapp.dangidongi.model.UserModel;
 import com.snapp.dangidongi.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -27,5 +26,10 @@ public class UserService {
     public UserModel findById(Long id) throws NotFoundException {
         UserEntity user = userRepository.findById(id).orElseThrow(NotFoundException::new);
         return userMapper.userEntityToUserModel(user);
+    }
+
+    public List<UserModel> findAll() {
+        List<UserEntity> users = userRepository.findAll();
+        return userMapper.userEntitiesToUserModels(users);
     }
 }
