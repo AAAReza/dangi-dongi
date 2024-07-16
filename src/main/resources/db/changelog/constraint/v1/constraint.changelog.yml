@@ -24,3 +24,15 @@ databaseChangeLog:
             constraintName: TB_USER_FRIEND_GROUP_FRIEND_GROUP_FK
             referencedColumnNames: ID
             referencedTableName: TB_FRIEND_GROUP
+        - addForeignKeyConstraint:
+              baseTableName: TB_BILL
+              baseColumnNames: FRIEND_GROUP_ID
+              constraintName: TB_BILL_FRIEND_GROUP_FK
+              referencedColumnNames: ID
+              referencedTableName: TB_FRIEND_GROUP
+        - addForeignKeyConstraint:
+              baseTableName: TB_BILL
+              baseColumnNames: BILL_OWNER_ID
+              constraintName: TB_USER_FRIEND_GROUP_FK
+              referencedColumnNames: ID
+              referencedTableName: TB_USER
