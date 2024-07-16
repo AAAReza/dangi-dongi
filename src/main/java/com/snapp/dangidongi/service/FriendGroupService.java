@@ -52,4 +52,8 @@ public class FriendGroupService {
     public Page<FriendGroupModel> findGroupByCreatorId(Long userId, Pageable pageable) {
         return friendGroupRepository.findByCreator_Id(userId, pageable).map(friendGroupMapper::entityToModel);
     }
+
+    public Page<FriendGroupModel> getMyFriendGroups(Long userId, Pageable pageable) {
+        return friendGroupRepository.findByUserFriendGroups_User_Id(userId, pageable).map(friendGroupMapper::entityToModel);
+    }
 }

@@ -7,10 +7,12 @@ public interface Url {
     String USERS = API_V1 + "/users";
     String USERS_ID = API_V1 + "/users/{id}";
     String USERS_PHONE = API_V1 + "/users/phone/{phone}";
-
+    String USERS_GROUP_GROUP_ID = API_V1 + "/users/group/{group-id}";
 
     String FRIEND_GROUP = API_V1 + "/friend-groups";
     String FRIEND_GROUP_ID = API_V1 + "/friend-groups/{id}";
     String FRIEND_GROUP_CREATOR_ID = API_V1 + "/friend-groups/creator/{creator-id}";
     String FRIEND_GROUP_ID_USERS = API_V1 + "/friend-groups/{group-id}/users/{user-id}";
+
+    String FRIEND_GROUP_ME = API_V1 + "/friend-groups/me/{user-id}";
 }
