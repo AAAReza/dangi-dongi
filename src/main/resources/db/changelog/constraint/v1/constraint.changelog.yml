@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-constraint
+      author: Reza Afzali
+      runOrder: last
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: TB_FRIEND_GROUP
+            baseColumnNames: CREATOR
+            constraintName: FRIEND_GROUP_USER_FK
+            referencedColumnNames: id
+            referencedTableName: TB_USER
+
+        - addForeignKeyConstraint:
+            baseTableName: TB_USER_FRIEND_GROUP
+            baseColumnNames: USER
+            constraintName: TB_USER_FRIEND_GROUP_USER_FK
+            referencedColumnNames: ID
+            referencedTableName: TB_USER
+
+        - addForeignKeyConstraint:
+            baseTableName: TB_USER_FRIEND_GROUP
+            baseColumnNames: GROUP
+            constraintName: TB_USER_FRIEND_GROUP_FRIEND_GROUP_FK
+            referencedColumnNames: ID
+            referencedTableName: TB_FRIEND_GROUP

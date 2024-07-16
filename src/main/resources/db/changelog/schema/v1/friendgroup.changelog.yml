@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-friend-group
+      author: Reza Afzali
+      changes:
+        - createTable:
+            tableName: TB_FRIEND_GROUP
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: friend_group_pk
+                  name: id
+                  type: NUMBER(19)
+              - column:
+                  name: NAME
+                  type: varchar2(70)
+              - column:
+                  name: AVATAR
+                  type: BLOB
+              - column:
+                  name: DESCRIPTION
+                  type: varchar2(255)
+              - column:
+                  name: CREATOR
+                  type: NUMBER(19)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: USER_FRIEND_GROUPS
+                  type: NUMBER(19)
+              - column:
+                  name: REFERRAL_LINK
+                  type: VARCHAR2(30)
+                  constraints:
+                    unique: true
+              - column:
+                  name: CREATION_TIME
+                  type: TIMESTAMP(6)
+
+        - createSequence:
+            sequenceName: TB_FRIEND_GROUP_SEQ
+            incrementBy: 50
+            startValue: 0
+
+
