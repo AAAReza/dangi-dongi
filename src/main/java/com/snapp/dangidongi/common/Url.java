@@ -15,4 +15,9 @@ public interface Url {
     String FRIEND_GROUP_ID_USERS = API_V1 + "/friend-groups/{group-id}/users/{user-id}";
 
     String FRIEND_GROUP_ME = API_V1 + "/friend-groups/me/{user-id}";
+
+
+    String BILLS = API_V1 + "/bills";
+    String BILLS_ID = API_V1 + "/bills/{id}";
+    String BILLS_GROUP_GROUP_ID = API_V1 + "/bills/group/{group-id}";
 }

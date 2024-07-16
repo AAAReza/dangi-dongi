@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-bill
+      author: Reza Afzali
+      changes:
+        - createTable:
+            tableName: TB_BILL
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: BILL_PK
+                  name: id
+                  type: NUMBER(19)
+              - column:
+                  name: NAME
+                  type: varchar2(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: REASON
+                  type: varchar2(255)
+              - column:
+                  name: AMOUNT
+                  type: NUMBER(19)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: PAYMENT_DATE
+                  type: TIMESTAMP(6)
+              - column:
+                  name: CREATION_TIME
+                  type: TIMESTAMP(6)
+              - column:
+                  name: FRIEND_GROUP_ID
+                  type: NUMBER(19)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: BILL_OWNER_ID
+                  type: NUMBER(19)
+                  constraints:
+                    nullable: false
+        - createSequence:
+            sequenceName: TB_BILL_SEQ
+            incrementBy: 50
+            startValue: 50
+            minValue: 50
