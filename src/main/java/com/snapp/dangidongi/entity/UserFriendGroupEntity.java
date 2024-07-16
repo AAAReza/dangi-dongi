@@ -18,9 +18,11 @@ public class UserFriendGroupEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
     private UserEntity user;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "GROUP_ID")
     private FriendGroupEntity group;
     @CreationTimestamp
     private LocalDateTime joinToGroupTime;

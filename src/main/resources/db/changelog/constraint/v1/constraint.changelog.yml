@@ -6,21 +6,21 @@ databaseChangeLog:
       changes:
         - addForeignKeyConstraint:
             baseTableName: TB_FRIEND_GROUP
-            baseColumnNames: CREATOR
+            baseColumnNames: CREATOR_ID
             constraintName: FRIEND_GROUP_USER_FK
             referencedColumnNames: id
             referencedTableName: TB_USER
 
         - addForeignKeyConstraint:
             baseTableName: TB_USER_FRIEND_GROUP
-            baseColumnNames: USER
+            baseColumnNames: USER_ID
             constraintName: TB_USER_FRIEND_GROUP_USER_FK
             referencedColumnNames: ID
             referencedTableName: TB_USER
 
         - addForeignKeyConstraint:
             baseTableName: TB_USER_FRIEND_GROUP
-            baseColumnNames: GROUP
+            baseColumnNames: GROUP_ID
             constraintName: TB_USER_FRIEND_GROUP_FRIEND_GROUP_FK
             referencedColumnNames: ID
             referencedTableName: TB_FRIEND_GROUP

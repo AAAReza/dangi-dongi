@@ -15,10 +15,10 @@ databaseChangeLog:
                   name: id
                   type: NUMBER(19)
               - column:
-                  name: USER
+                  name: USER_ID
                   type: NUMBER(19)
               - column:
-                  name: GROUP
+                  name: GROUP_ID
                   type: NUMBER(19)
               - column:
                   name: JOIN_TO_GROUP_TIME
@@ -27,6 +27,6 @@ databaseChangeLog:
         - createSequence:
             sequenceName: TB_USER_FRIEND_GROUP_SEQ
             incrementBy: 50
-            startValue: 0
-
+            startValue: 50
+            minValue: 50
 

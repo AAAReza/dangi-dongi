@@ -23,8 +23,10 @@ public class FriendGroupEntity {
     private String avatar;
     private String description;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CREATOR_ID")
     private UserEntity creator;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "GROUP_ID")
     private List<UserFriendGroupEntity> userFriendGroups;
     private String referralLink;
     @CreationTimestamp

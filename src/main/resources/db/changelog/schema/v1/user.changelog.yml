@@ -52,4 +52,5 @@ databaseChangeLog:
         - createSequence:
             sequenceName: TB_USER_SEQ
             incrementBy: 50
-            startValue: 0
+            startValue: 50
+            minValue: 50

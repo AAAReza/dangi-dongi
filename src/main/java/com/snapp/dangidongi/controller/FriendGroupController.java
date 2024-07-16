@@ -1,6 +1,7 @@
 package com.snapp.dangidongi.controller;
 
 import com.snapp.dangidongi.common.Url;
+import com.snapp.dangidongi.model.FriendGroupCreateModel;
 import com.snapp.dangidongi.model.FriendGroupModel;
 import com.snapp.dangidongi.model.UserModel;
 import com.snapp.dangidongi.service.FriendGroupService;
@@ -26,8 +27,9 @@ public class FriendGroupController {
 
 
     @PostMapping(value = Url.FRIEND_GROUP, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> createFriendGroup(@RequestBody @Validated FriendGroupModel friendGroupModel) {
-        var id = friendGroupService.save(friendGroupModel).getId();
+    public ResponseEntity<Long> createFriendGroup(@RequestBody @Validated FriendGroupCreateModel friendGroupCreateModel) {
+
+        var id = friendGroupService.save(friendGroupCreateModel).getId();
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -36,6 +38,13 @@ public class FriendGroupController {
         return ResponseEntity.created(uri).build();
     }
 
+
+    @SneakyThrows
+    @PostMapping(value = Url.FRIEND_GROUP_ID_USERS, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> addUserToFriendGroup(@PathVariable("group-id") Long groupId, @PathVariable("user-id") Long userId) {
+        friendGroupService.addUserToGroup(groupId, userId);
+        return ResponseEntity.accepted().build();
+    }
 
     @SneakyThrows
     @GetMapping(value = Url.FRIEND_GROUP_ID, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -53,7 +62,7 @@ public class FriendGroupController {
 
 
     @DeleteMapping(value = Url.FRIEND_GROUP_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserModel> deleteUserById(@PathVariable Long id) {
+    public ResponseEntity<UserModel> deleteFriendGroupById(@PathVariable Long id) {
         friendGroupService.deleteById(id);
         return ResponseEntity.ok().build();
     }

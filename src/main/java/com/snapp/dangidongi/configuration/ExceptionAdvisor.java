@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -20,7 +21,7 @@ public class ExceptionAdvisor {
         ErrorModel errorResponse = ErrorModel.builder()
                 .description(ex.getErrors().getDescription())
                 .errorCode(ex.getErrors().getCode())
-                .metadata(ex.getCause()).build();
+                .metadata(ex.getMessage()).build();
         return new ResponseEntity<>(errorResponse, ex.getErrors().getStatus());
     }
 
@@ -30,6 +31,14 @@ public class ExceptionAdvisor {
         ErrorModel errorModel = ErrorModel.builder().description(Errors.INVALID_REQUEST.getDescription())
                 .metadata(ex.getBindingResult().getFieldErrors().stream().map(fieldError -> "[" + fieldError.getField() + "] : " + fieldError.getDefaultMessage())
                         .collect(Collectors.joining(", "))).errorCode(Errors.INVALID_REQUEST.getCode()).build();
+        return new ResponseEntity<ErrorModel>(errorModel, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<ErrorModel> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
+        ErrorModel errorModel = ErrorModel.builder().description(Errors.INVALID_REQUEST.getDescription())
+                .metadata(ex.getMessage()).errorCode(Errors.INVALID_REQUEST.getCode()).build();
         return new ResponseEntity<ErrorModel>(errorModel, HttpStatus.BAD_REQUEST);
     }
 }

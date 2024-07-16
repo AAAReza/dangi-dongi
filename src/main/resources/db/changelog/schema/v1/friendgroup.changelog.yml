@@ -24,13 +24,10 @@ databaseChangeLog:
                   name: DESCRIPTION
                   type: varchar2(255)
               - column:
-                  name: CREATOR
+                  name: CREATOR_ID
                   type: NUMBER(19)
                   constraints:
                     nullable: false
-              - column:
-                  name: USER_FRIEND_GROUPS
-                  type: NUMBER(19)
               - column:
                   name: REFERRAL_LINK
                   type: VARCHAR2(30)
@@ -43,6 +40,7 @@ databaseChangeLog:
         - createSequence:
             sequenceName: TB_FRIEND_GROUP_SEQ
             incrementBy: 50
-            startValue: 0
+            startValue: 50
+            minValue: 50
 
 
