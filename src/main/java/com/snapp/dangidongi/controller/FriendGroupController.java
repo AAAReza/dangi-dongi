@@ -67,4 +67,11 @@ public class FriendGroupController {
         return ResponseEntity.ok().build();
     }
 
+    //TODO: user-id from current user after implement security
+    @SneakyThrows
+    @GetMapping(value = Url.FRIEND_GROUP_ME, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<FriendGroupModel>> getMyFriendGroups(@PathVariable("user-id") Long userId, @ParameterObject Pageable pageable) {
+        Page<FriendGroupModel> models = friendGroupService.getMyFriendGroups(userId, pageable);
+        return ResponseEntity.ok(models);
+    }
 }

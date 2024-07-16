@@ -42,4 +42,8 @@ public class UserService {
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
+
+    public Page<UserModel> getUsersInGroup(Long groupId, Pageable pageable) {
+        return userRepository.findByUserFriendGroups_Group_Id(groupId, pageable).map(userMapper::userEntityToUserModel);
+    }
 }

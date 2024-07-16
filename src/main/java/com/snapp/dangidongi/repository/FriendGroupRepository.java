@@ -11,4 +11,7 @@ public interface FriendGroupRepository extends JpaRepository<FriendGroupEntity, 
 
     Page<FriendGroupEntity> findByCreator_Id(Long creatorId, Pageable pageable);
 
+    Page<FriendGroupEntity> findByUserFriendGroups_User_Id(Long userId, Pageable pageable);
+
+
 }

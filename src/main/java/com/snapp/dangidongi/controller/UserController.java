@@ -63,4 +63,11 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+
+    @GetMapping(value = Url.USERS_GROUP_GROUP_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<UserModel>> getUsersInGroup(@PathVariable("group-id") Long groupId, @ParameterObject Pageable pageable) {
+        Page<UserModel> usersInGroup = userService.getUsersInGroup(groupId, pageable);
+        return ResponseEntity.ok(usersInGroup);
+    }
+
 }
