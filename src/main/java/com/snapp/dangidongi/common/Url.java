@@ -6,4 +6,5 @@ public interface Url {
 
     String USERS = API_V1 + "/users";
     String USERS_ID = API_V1 + "/users/{id}";
+    String USERS_PHONE = API_V1 + "/users/phone/{phone}";
 }
