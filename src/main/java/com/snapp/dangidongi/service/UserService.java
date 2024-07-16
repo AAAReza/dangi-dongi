@@ -28,9 +28,18 @@ public class UserService {
         return userMapper.userEntityToUserModel(user);
     }
 
+    public UserModel findByPhone(Long phone) throws NotFoundException {
+        UserEntity user = userRepository.findByPhone(phone).orElseThrow(NotFoundException::new);
+        return userMapper.userEntityToUserModel(user);
+    }
+
 
     public Page<UserModel> findAll(Pageable pageable) {
         Page<UserEntity> users = userRepository.findAll(pageable);
         return users.map(userMapper::userEntityToUserModel);
+    }
+
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
     }
 }

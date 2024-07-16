@@ -18,6 +18,7 @@ import java.net.URI;
 
 @RestController
 @AllArgsConstructor
+//TODO: limit access to this service in authorization
 public class UserController {
 
     private final UserService userService;
@@ -42,11 +43,24 @@ public class UserController {
         return ResponseEntity.ok(model);
     }
 
+    @SneakyThrows
+    @GetMapping(value = Url.USERS_PHONE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserModel> getUserByPhone(@PathVariable Long phone) {
+        UserModel model = userService.findByPhone(phone);
+        return ResponseEntity.ok(model);
+    }
 
     @GetMapping(value = Url.USERS, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<UserModel>> getUsers(@ParameterObject Pageable pageable) {
         Page<UserModel> models = userService.findAll(pageable);
         return ResponseEntity.ok(models);
+    }
+
+
+    @DeleteMapping(value = Url.USERS_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserModel> deleteUserById(@PathVariable Long id) {
+        userService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
 }
