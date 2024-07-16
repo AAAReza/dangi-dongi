@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-bill-share
+      author: Reza Afzali
+      changes:
+        - createTable:
+            tableName: TB_BILL_SHARE
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: BILL_SHARE_PK
+                  name: id
+                  type: NUMBER(19)
+
+              - column:
+                  name: SHARE_AMOUNT
+                  type: NUMBER(19)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CREATION_TIME
+                  type: TIMESTAMP(6)
+              - column:
+                  name: USER_FRIEND_GROUP_ID
+                  type: NUMBER(19)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: BILL_ID
+                  type: NUMBER(19)
+                  constraints:
+                    nullable: false
+        - createSequence:
+            sequenceName: TB_BILL_SHARE_SEQ
+            incrementBy: 50
+            startValue: 50
+            minValue: 50
