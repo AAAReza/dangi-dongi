@@ -29,6 +29,7 @@ public class UserEntity {
     private Gender gender;
     private LocalDate birthday;
     @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "TB_USER_FRIEND_GROUP", joinColumns = @JoinColumn(name = "USER_ID"))
     private List<UserFriendGroupEntity> userFriendGroups;
     @CreationTimestamp
     private LocalDateTime creationTime;

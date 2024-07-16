@@ -1,56 +1,40 @@
 package com.snapp.dangidongi.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.snapp.dangidongi.DangiDongiApplicationTests;
 import com.snapp.dangidongi.common.Url;
 import com.snapp.dangidongi.entity.Gender;
 import com.snapp.dangidongi.entity.UserEntity;
 import com.snapp.dangidongi.mapper.UserMapper;
 import com.snapp.dangidongi.model.UserModel;
 import com.snapp.dangidongi.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
-public class UserTest {
-
+public class UserTest extends DangiDongiApplicationTests {
 
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private ObjectMapper objectMapper;
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-    private MockMvc mvc;
 
-    @BeforeEach
-    void setUp() {
-        this.mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
 
     private UserModel buildUserModel() {
         return UserModel.builder()
-                .username("aaareza")
+                .username("aaareza" + counter++)
                 .firstname("reza")
                 .lastname("afzali")
-                .email("reza@email.com")
+                .email("reza@email.com" + counter++)
                 .password("123")
-                .phone(9195264326L)
+                .phone(9195264326L + counter++)
                 .gender(Gender.MALE)
                 .birthday(LocalDate.now())
                 .build();
