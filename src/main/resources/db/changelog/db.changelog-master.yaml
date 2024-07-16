@@ -1,3 +1,5 @@
 databaseChangeLog:
-  - include:
-        file: db/changelog/schema/changelog.yml
+  - includeAll:
+      path: db/changelog/schema/v1/
+  - includeAll:
+      path: db/changelog/constraint/v1/
