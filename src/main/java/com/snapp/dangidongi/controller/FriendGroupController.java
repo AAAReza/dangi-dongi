@@ -45,9 +45,9 @@ public class FriendGroupController {
     }
 
     @SneakyThrows
-    @GetMapping(value = Url.FRIEND_GROUP_USERS_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<FriendGroupModel>> getOwnFriendGroups(@PathVariable("user-id") Long userId, @ParameterObject Pageable pageable) {
-        Page<FriendGroupModel> models = friendGroupService.findGroupByUserId(userId, pageable);
+    @GetMapping(value = Url.FRIEND_GROUP_CREATOR_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<FriendGroupModel>> getOwnFriendGroups(@PathVariable("creator-id") Long userId, @ParameterObject Pageable pageable) {
+        Page<FriendGroupModel> models = friendGroupService.findGroupByCreatorId(userId, pageable);
         return ResponseEntity.ok(models);
     }
 

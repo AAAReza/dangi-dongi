@@ -33,7 +33,7 @@ public class FriendGroupService {
         friendGroupRepository.deleteById(id);
     }
 
-    public Page<FriendGroupModel> findGroupByUserId(Long userId, Pageable pageable) {
+    public Page<FriendGroupModel> findGroupByCreatorId(Long userId, Pageable pageable) {
         return friendGroupRepository.findByCreator_Id(userId, pageable).map(friendGroupMapper::entityToModel);
     }
 }
