@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -25,6 +27,7 @@ public class FriendGroupTest extends DangiDongiApplicationTests {
     @Autowired
     private UserRepository userRepository;
     private static Long userId;
+    private static String groupLocation;
 
     @BeforeEach
     public void saveUserEntity() {
@@ -55,7 +58,39 @@ public class FriendGroupTest extends DangiDongiApplicationTests {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(friendGroupCreateModel))).andReturn();
         assertEquals(HttpStatus.CREATED.value(), mvcResult.getResponse().getStatus());
+        groupLocation = mvcResult.getResponse().getHeaders("Location").getFirst();
 
+    }
+
+
+    @Test
+    public void testAddUserToGroup() throws Exception {
+        testGetFriendGroup();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(Url.FRIEND_GROUP_ID_USERS, Arrays.stream(groupLocation.split("/")).toList().getLast(), userId)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+        assertEquals(HttpStatus.ACCEPTED.value(), mvcResult.getResponse().getStatus());
+
+    }
+
+
+    @Test
+    public void testGetFriendGroup() throws Exception {
+        testCreateFriendGroup();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(groupLocation)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
+        assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
+
+    }
+
+    @Test
+    public void testOwnFriendGroup() throws Exception {
+        testCreateFriendGroup();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(Url.FRIEND_GROUP_CREATOR_ID, userId)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
+        assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
+        assertEquals(1, objectMapper.readValue(mvcResult.getResponse().getContentAsByteArray(), Map.class).get("totalElements"));
     }
 
 }
