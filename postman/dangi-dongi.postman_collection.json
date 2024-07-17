@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "fe4a9ef8-f3cf-4317-8ffc-1e9513293823",
+		"name": "dangi-dongi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create-user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"create-user\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.collectionVariables.set(\"CREATED_USER_LOCATION\", pm.response.headers.get('Location'));\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"{{$randomFullName}}\",\r\n  \"firstname\": \"{{$randomFullName}}\",\r\n  \"lastname\": \"{{$randomFullName}}\",\r\n  \"email\": \"{{$randomFullName}}@mail.com\",\r\n  \"password\": \"{{$randomInt}}\",\r\n  \"phone\": {{$randomInt}},\r\n  \"gender\": \"MALE\",\r\n  \"birthday\": \"\"\r\n}"
+				},
+				"url": {
+					"raw": "{{BASE_API}}/api/v1/users",
+					"host": [
+						"{{BASE_API}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"get-user\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    let response = pm.response.json();\r",
+							"    pm.collectionVariables.set(\"USER_PHONE\", response.phone);\r",
+							"    pm.collectionVariables.set(\"USER_ID\", response.id);\r",
+							"    pm.collectionVariables.set(\"USER_NAME\", response.username);\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{CREATED_USER_LOCATION}}",
+					"host": [
+						"{{CREATED_USER_LOCATION}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{PASSWORD}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{USERNAME}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_API",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "USERNAME",
+			"value": "dangi"
+		},
+		{
+			"key": "PASSWORD",
+			"value": "dongi"
+		},
+		{
+			"key": "CREATED_USER_LOCATION",
+			"value": ""
+		},
+		{
+			"key": "USER_PHONE",
+			"value": ""
+		},
+		{
+			"key": "USER_ID",
+			"value": ""
+		},
+		{
+			"key": "USER_NAME",
+			"value": ""
+		}
+	]
+}
