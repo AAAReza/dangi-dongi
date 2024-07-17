@@ -21,7 +21,7 @@
     </developers>
     <properties>
         <java.version>21</java.version>
-        <spring-boot.build-image.imageName>com.snapp/dangi-dongi:${version}</spring-boot.build-image.imageName>
+        <spring-boot.build-image.imageName>com.snapp/dangi-dongi:${project.version}</spring-boot.build-image.imageName>
     </properties>
     <dependencies>
         <dependency>
