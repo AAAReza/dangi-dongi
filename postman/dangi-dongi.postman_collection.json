@@ -79,6 +79,296 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "create-group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"create-user\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.collectionVariables.set(\"CREATED_GROUP_LOCATION\", pm.response.headers.get('Location'));\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{$randomAdjective}}\",\r\n  \"avatar\": \"{{$randomMimeType}}\",\r\n  \"description\": \"{{$randomAbbreviation}}\",\r\n  \"creator\": {{USER_ID}}\r\n}"
+				},
+				"url": {
+					"raw": "{{BASE_API}}/api/v1/friend-groups",
+					"host": [
+						"{{BASE_API}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"friend-groups"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-group-info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"get-user\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    let response = pm.response.json();\r",
+							"    pm.collectionVariables.set(\"REFERRAL_LINK\", response.referralLink);\r",
+							"    pm.collectionVariables.set(\"GROUP_ID\", response.id);\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{CREATED_GROUP_LOCATION}}",
+					"host": [
+						"{{CREATED_GROUP_LOCATION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find-user-by-phone",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"get-user\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    let response = pm.response.json();\r",
+							"    pm.collectionVariables.set(\"FIND_USER_ID\", response.id);\r",
+							"    pm.collectionVariables.set(\"FIND_USER_NAME\", response.username);\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_API}}/api/v1/users/phone/{{USER_PHONE}}",
+					"host": [
+						"{{BASE_API}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"phone",
+						"{{USER_PHONE}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add-user-to-group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"add-user-to-group\", function () {\r",
+							"    pm.response.to.have.status(202);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{$randomAdjective}}\",\r\n  \"avatar\": \"{{$randomMimeType}}\",\r\n  \"description\": \"{{$randomAbbreviation}}\",\r\n  \"creator\": {{USER_ID}}\r\n}"
+				},
+				"url": {
+					"raw": "{{BASE_API}}/api/v1/friend-groups/{{GROUP_ID}}/users/{{FIND_USER_ID}}",
+					"host": [
+						"{{BASE_API}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"friend-groups",
+						"{{GROUP_ID}}",
+						"users",
+						"{{FIND_USER_ID}}"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-users-in-group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"get-user\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    let response = pm.response.json();\r",
+							"    pm.collectionVariables.set(\"FIND_USER_ID\", response.id);\r",
+							"    pm.collectionVariables.set(\"FIND_USER_NAME\", response.username);\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_API}}/api/v1/users/group/{{GROUP_ID}}",
+					"host": [
+						"{{BASE_API}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"group",
+						"{{GROUP_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add-bill-in-group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"add-bill-to-group\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.collectionVariables.set(\"BILL_LOCATION\", pm.response.headers.get('Location'));\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{$randomBs}}\",\r\n    \"amount\": {{$randomInt}},\r\n    \"reason\": \"{{$randomJobTitle}}\",\r\n    \"paymentDate\": \"2024-07-17T14:30:17.966874\",\r\n    \"billOwner\": {\r\n        \"id\": {{USER_ID}}\r\n    },\r\n    \"friendGroup\": {\r\n        \"id\": {{GROUP_ID}}\r\n    },\r\n    \"creationTime\": \"2024-07-17T14:30:17.966874\"\r\n}"
+				},
+				"url": {
+					"raw": "{{BASE_API}}/api/v1/bills",
+					"host": [
+						"{{BASE_API}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"bills"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-bill-info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"get-user\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    let response = pm.response.json();\r",
+							"    pm.collectionVariables.set(\"REFERRAL_LINK\", response.referralLink);\r",
+							"    pm.collectionVariables.set(\"GROUP_ID\", response.id);\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BILL_LOCATION}}",
+					"host": [
+						"{{BILL_LOCATION}}"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
@@ -143,6 +433,30 @@
 		},
 		{
 			"key": "USER_NAME",
+			"value": ""
+		},
+		{
+			"key": "CREATED_GROUP_LOCATION",
+			"value": ""
+		},
+		{
+			"key": "REFERRAL_LINK",
+			"value": ""
+		},
+		{
+			"key": "GROUP_ID",
+			"value": ""
+		},
+		{
+			"key": "FIND_USER_ID",
+			"value": ""
+		},
+		{
+			"key": "FIND_USER_NAME",
+			"value": ""
+		},
+		{
+			"key": "BILL_LOCATION",
 			"value": ""
 		}
 	]
