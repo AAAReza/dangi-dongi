@@ -5,6 +5,7 @@ public interface Url {
     String API_V1 = "/api/v1";
 
     String USERS = API_V1 + "/users";
+    String REGISTER = API_V1 + "/register";
     String USERS_ID = API_V1 + "/users/{id}";
     String USERS_PHONE = API_V1 + "/users/phone/{phone}";
     String USERS_GROUP_GROUP_ID = API_V1 + "/users/group/{group-id}";
@@ -14,7 +15,7 @@ public interface Url {
     String FRIEND_GROUP_CREATOR_ID = API_V1 + "/friend-groups/creator/{creator-id}";
     String FRIEND_GROUP_ID_USERS = API_V1 + "/friend-groups/{group-id}/users/{user-id}";
 
-    String FRIEND_GROUP_ME = API_V1 + "/friend-groups/me/{user-id}";
+    String FRIEND_GROUP_ME = API_V1 + "/friend-groups/me";
 
 
     String BILLS = API_V1 + "/bills";
