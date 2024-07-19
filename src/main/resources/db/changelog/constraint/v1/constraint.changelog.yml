@@ -40,3 +40,9 @@ databaseChangeLog:
             constraintName: UNIQUE_USER_GROUP
             tableName: TB_USER_FRIEND_GROUP
             columnNames: USER_ID, GROUP_ID
+        - addForeignKeyConstraint:
+            baseTableName: TB_PAYMENT_INFO
+            baseColumnNames: BILL_SHARE_ID
+            constraintName: TB_PAYMENT_INFO_BILL_SHARE_FK
+            referencedColumnNames: ID
+            referencedTableName: TB_BILL_SHARE
