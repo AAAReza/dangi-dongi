@@ -19,4 +19,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query("select u from UserEntity u inner join UserFriendGroupEntity uf on  uf.user.id = u.id where uf.group.id = :groupId")
     Page<UserEntity> findByUserFriendGroups_Group_Id(@Param("groupId") Long groupId, Pageable pageable);
+
+    Optional<UserEntity> findByUsername(String username);
 }
