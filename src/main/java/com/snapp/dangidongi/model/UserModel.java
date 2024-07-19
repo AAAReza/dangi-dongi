@@ -1,7 +1,9 @@
 package com.snapp.dangidongi.model;
 
 import com.snapp.dangidongi.entity.Gender;
+import com.snapp.dangidongi.security.Role;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -25,6 +27,8 @@ public class UserModel {
     private String password;
     private Long phone;
     private Gender gender;
+    @NotNull
+    private Role role;
     private LocalDate birthday;
     private LocalDateTime creationTime;
 }
