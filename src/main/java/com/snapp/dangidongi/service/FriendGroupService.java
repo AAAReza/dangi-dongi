@@ -6,7 +6,6 @@ import com.snapp.dangidongi.entity.UserFriendGroupEntity;
 import com.snapp.dangidongi.exception.NotFoundException;
 import com.snapp.dangidongi.mapper.FriendGroupMapper;
 import com.snapp.dangidongi.model.FriendGroupCreateModel;
-import com.snapp.dangidongi.model.FriendGroupModel;
 import com.snapp.dangidongi.repository.FriendGroupRepository;
 import com.snapp.dangidongi.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -39,9 +38,8 @@ public class FriendGroupService {
         return friendGroupRepository.save(friendGroupEntity);
     }
 
-    public FriendGroupModel findById(Long id) throws NotFoundException {
-        FriendGroupEntity friendGroup = friendGroupRepository.findById(id).orElseThrow(NotFoundException::new);
-        return friendGroupMapper.entityToModel(friendGroup);
+    public FriendGroupEntity findById(Long id) throws NotFoundException {
+        return friendGroupRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
 
@@ -49,11 +47,11 @@ public class FriendGroupService {
         friendGroupRepository.deleteById(id);
     }
 
-    public Page<FriendGroupModel> findGroupByCreatorId(Long userId, Pageable pageable) {
-        return friendGroupRepository.findByCreator_Id(userId, pageable).map(friendGroupMapper::entityToModel);
+    public Page<FriendGroupEntity> findGroupByCreatorId(Long userId, Pageable pageable) {
+        return friendGroupRepository.findByCreator_Id(userId, pageable);
     }
 
-    public Page<FriendGroupModel> getMyFriendGroups(Long userId, Pageable pageable) {
-        return friendGroupRepository.findByUserFriendGroups_User_Id(userId, pageable).map(friendGroupMapper::entityToModel);
+    public Page<FriendGroupEntity> getMyFriendGroups(Long userId, Pageable pageable) {
+        return friendGroupRepository.findByUserFriendGroups_User_Id(userId, pageable);
     }
 }
