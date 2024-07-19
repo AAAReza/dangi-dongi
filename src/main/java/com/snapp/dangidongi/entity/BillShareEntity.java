@@ -31,4 +31,14 @@ public class BillShareEntity {
     @CreationTimestamp
     private LocalDateTime creationTime;
 
+
+    @Transient
+    public FriendGroupEntity getGroup() {
+        return userFriendGroup.getGroup();
+    }
+
+    @Transient
+    public UserEntity getUser() {
+        return userFriendGroup.getUser();
+    }
 }

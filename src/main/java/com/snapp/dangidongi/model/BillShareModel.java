@@ -18,7 +18,8 @@ public class BillShareModel {
     private Long id;
     private BigDecimal shareAmount;
 
-    private UserFriendGroupModel userFriendGroup;
+    private UserModel user;
+    private FriendGroupModel group;
 
     private BillModel bill;
     private LocalDateTime creationTime;
