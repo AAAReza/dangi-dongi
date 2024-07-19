@@ -25,4 +25,7 @@ public interface Url {
     String BILLS_SHARE_BILL_ID_GROUP_GROUP_ID_ME = API_V1 + "/bill-share/{bill-id}/group/{group-id}/me/{user-id}";
     String BILLS_SHARE_BILL_ID_GROUP_GROUP_ID = API_V1 + "/bill-share/groups/{group-id}";
     String BILLS_SHARE_BILLS_BILL_ID = API_V1 + "/bill-share/bills/{bill-id}";
+
+
+    String PAYMENT_INFO = API_V1 + "/payment-info";
 }

@@ -210,7 +210,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"get-user\", function () {\r",
+							"pm.test(\"get-group\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"    let response = pm.response.json();\r",
 							"    pm.collectionVariables.set(\"REFERRAL_LINK\", response.referralLink);\r",
@@ -218,7 +218,8 @@
 							"\r",
 							"})"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -241,7 +242,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"get-user\", function () {\r",
+							"pm.test(\"find-user\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"    let response = pm.response.json();\r",
 							"    pm.collectionVariables.set(\"FIND_USER_ID\", response.id);\r",
@@ -249,7 +250,8 @@
 							"\r",
 							"})"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -333,13 +335,10 @@
 						"exec": [
 							"pm.test(\"get-user\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
-							"    let response = pm.response.json();\r",
-							"    pm.collectionVariables.set(\"FIND_USER_ID\", response.id);\r",
-							"    pm.collectionVariables.set(\"FIND_USER_NAME\", response.username);\r",
-							"\r",
 							"})"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -453,8 +452,7 @@
 							"pm.test(\"get-bill-share-info\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"    let response = pm.response.json();\r",
-							"    pm.collectionVariables.set(\"REFERRAL_LINK\", response.referralLink);\r",
-							"    pm.collectionVariables.set(\"GROUP_ID\", response.id);\r",
+							"    pm.collectionVariables.set(\"BILL_SHARE_ID\", response.content[0].id);\r",
 							"\r",
 							"})"
 						],
@@ -477,6 +475,93 @@
 						"bill-share",
 						"bills",
 						"{{BILL_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pay-share",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"add-bill-to-group\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.collectionVariables.set(\"BILL_LOCATION\", pm.response.headers.get('Location'));\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"billShare\" : {{BILL_SHARE_ID}}\r\n}"
+				},
+				"url": {
+					"raw": "{{BASE_API}}/api/v1/payment-info",
+					"host": [
+						"{{BASE_API}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"payment-info"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-payment-info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"get-bill-share-info\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    let response = pm.response.json();\r",
+							"    pm.collectionVariables.set(\"BILL_SHARE_ID\", response.content[0].id);\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_API}}/api/v1/payment-info",
+					"host": [
+						"{{BASE_API}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"payment-info"
 					]
 				}
 			},
@@ -573,6 +658,10 @@
 		},
 		{
 			"key": "BILL_ID",
+			"value": ""
+		},
+		{
+			"key": "BILL_SHARE_ID",
 			"value": ""
 		}
 	]

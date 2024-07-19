@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-payment-info
+      author: Reza Afzali
+      changes:
+        - createTable:
+            tableName: TB_PAYMENT_INFO
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: PAYMENT_INFO_PK
+                  name: id
+                  type: NUMBER(19)
+
+              - column:
+                  name: AMOUNT
+                  type: NUMBER(19)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CREATION_TIME
+                  type: TIMESTAMP(6)
+              - column:
+                  name: PAYMENT_DATE
+                  type: TIMESTAMP(6)
+              - column:
+                  name: BILL_SHARE_ID
+                  type: NUMBER(19)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: TRACK_ID
+                  type: VARCHAR2(50)
+                  constraints:
+                    nullable: false
+        - createSequence:
+            sequenceName: TB_PAYMENT_INFO_SEQ
+            incrementBy: 50
+            startValue: 50
+            minValue: 50
