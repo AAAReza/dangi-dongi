@@ -1,6 +1,8 @@
 package com.snapp.dangidongi.controller;
 
 import com.snapp.dangidongi.common.Url;
+import com.snapp.dangidongi.exception.NotFoundException;
+import com.snapp.dangidongi.mapper.BillMapper;
 import com.snapp.dangidongi.model.BillModel;
 import com.snapp.dangidongi.service.BillService;
 import lombok.AllArgsConstructor;
@@ -22,10 +24,11 @@ import java.net.URI;
 public class BillController {
 
     private final BillService billService;
+    private final BillMapper billMapper;
 
 
     @PostMapping(value = Url.BILLS, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> createBill(@RequestBody @Validated BillModel bill) {
+    public ResponseEntity<Long> createBill(@RequestBody @Validated BillModel bill) throws NotFoundException {
         var id = billService.save(bill).getId();
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -39,14 +42,15 @@ public class BillController {
     @SneakyThrows
     @GetMapping(value = Url.BILLS_ID, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BillModel> getBillById(@PathVariable Long id) {
-        BillModel model = billService.findById(id);
+        BillModel model = billMapper.billEntityToBillModel(billService.findById(id));
         return ResponseEntity.ok(model);
     }
 
 
     @GetMapping(value = Url.BILLS, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<BillModel>> getBills(@ParameterObject Pageable pageable) {
-        Page<BillModel> models = billService.findAll(pageable);
+        Page<BillModel> models = billService.findAll(pageable)
+                .map(billMapper::billEntityToBillModel);
         return ResponseEntity.ok(models);
     }
 
@@ -60,7 +64,8 @@ public class BillController {
 
     @GetMapping(value = Url.BILLS_GROUP_GROUP_ID, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<BillModel>> getBillsInGroup(@PathVariable("group-id") Long groupId, @ParameterObject Pageable pageable) {
-        Page<BillModel> billsInGroup = billService.getBillsInGroup(groupId, pageable);
+        Page<BillModel> billsInGroup = billService.getBillsInGroup(groupId, pageable)
+                .map(billMapper::billEntityToBillModel);
         return ResponseEntity.ok(billsInGroup);
     }
 

@@ -36,3 +36,7 @@ databaseChangeLog:
               constraintName: TB_USER_FRIEND_GROUP_FK
               referencedColumnNames: ID
               referencedTableName: TB_USER
+        - addUniqueConstraint:
+            constraintName: UNIQUE_USER_GROUP
+            tableName: TB_USER_FRIEND_GROUP
+            columnNames: USER_ID, GROUP_ID
