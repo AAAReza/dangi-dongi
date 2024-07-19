@@ -19,7 +19,8 @@ public class FriendGroupModel {
     private String avatar;
     private String description;
     private UserModel creator;
-    private List<UserFriendGroupModel> userFriendGroups;
+    private List<UserModel> groupUsers;
+    private List<BillModel> bills;
     private String referralLink;
     private LocalDateTime creationTime;
 
