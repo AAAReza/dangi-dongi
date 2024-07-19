@@ -41,7 +41,11 @@ databaseChangeLog:
               - column:
                   name: GENDER
                   type: varchar2(6)
-
+              - column:
+                  name: ROLE
+                  type: varchar2(6)
+                  constraints:
+                    nullable: false
               - column:
                   name: BIRTHDAY
                   type: TIMESTAMP(6)

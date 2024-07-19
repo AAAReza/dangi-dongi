@@ -13,7 +13,6 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
-  security:
-    user:
-      name: dangi
-      password: dongi
+logging:
+  level:
+    root: info

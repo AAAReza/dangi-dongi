@@ -7,10 +7,12 @@ import com.snapp.dangidongi.entity.UserEntity;
 import com.snapp.dangidongi.mapper.UserMapper;
 import com.snapp.dangidongi.model.UserModel;
 import com.snapp.dangidongi.repository.UserRepository;
+import com.snapp.dangidongi.security.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -29,13 +31,14 @@ public class UserTest extends DangiDongiApplicationTests {
 
     private UserModel buildUserModel() {
         return UserModel.builder()
-                .username("aaareza" + counter++)
+                .username("dangi" + counter++)
                 .firstname("reza")
                 .lastname("afzali")
                 .email("reza@email.com" + counter++)
                 .password("123")
                 .phone(9195264326L + counter++)
                 .gender(Gender.MALE)
+                .role(Role.ROLE_USER)
                 .birthday(LocalDate.now())
                 .build();
     }
@@ -46,8 +49,10 @@ public class UserTest extends DangiDongiApplicationTests {
 
     }
 
+    @WithMockUser(username = "dangi0", roles = {"ADMIN"})
     @Test
     public void createUserSuccess() throws Exception {
+        createUserEntityAndSave();
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(Url.USERS)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(buildUserModel()))).andReturn();

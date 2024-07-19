@@ -1,5 +1,6 @@
 package com.snapp.dangidongi.entity;
 
+import com.snapp.dangidongi.security.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,6 +28,7 @@ public class UserEntity {
     private String password;
     private Long phone;
     private Gender gender;
+    private Role role;
     private LocalDate birthday;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<UserFriendGroupEntity> userFriendGroups;

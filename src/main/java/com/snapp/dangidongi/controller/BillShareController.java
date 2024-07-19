@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-//TODO: limit access to this service in authorization
 public class BillShareController {
 
     private final BillShareService billShareService;
@@ -34,7 +33,7 @@ public class BillShareController {
 
     @GetMapping(value = Url.BILLS_SHARE_BILLS_BILL_ID, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<BillShareModel>> getAllBillShareOfBill(@PathVariable("bill-id") Long billId,
-                                                                      @ParameterObject Pageable pageable) throws NotFoundException {
+                                                                      @ParameterObject Pageable pageable) {
         Page<BillShareModel> models = billShareService.getBillSharesOfBill(billId, pageable)
                 .map(billShareMapper::billShareEntityToBillShareModel);
         return ResponseEntity.ok(models);
@@ -42,7 +41,7 @@ public class BillShareController {
 
     @GetMapping(value = Url.BILLS_SHARE_BILL_ID_GROUP_GROUP_ID, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<BillShareModel>> getAllBillShareOfGroup(@PathVariable("group-id") Long groupId,
-                                                                       @ParameterObject Pageable pageable) throws NotFoundException {
+                                                                       @ParameterObject Pageable pageable) {
         Page<BillShareModel> models = billShareService.getAllBillSharesInGroup(groupId, pageable)
                 .map(billShareMapper::billShareEntityToBillShareModel);
         return ResponseEntity.ok(models);
