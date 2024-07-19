@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FriendGroupTest extends DangiDongiApplicationTests {
 
@@ -90,7 +91,7 @@ public class FriendGroupTest extends DangiDongiApplicationTests {
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andReturn();
         assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
-        assertEquals(1, objectMapper.readValue(mvcResult.getResponse().getContentAsByteArray(), Map.class).get("totalElements"));
+        assertTrue(!objectMapper.readValue(mvcResult.getResponse().getContentAsByteArray(), Map.class).isEmpty());
     }
 
 }

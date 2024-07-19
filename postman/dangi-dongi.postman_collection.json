@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "fe4a9ef8-f3cf-4317-8ffc-1e9513293823",
+		"_postman_id": "118885ae-1d0d-49bc-b951-1f7c46bcd2ca",
 		"name": "dangi-dongi",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3067260"
 	},
 	"item": [
 		{
@@ -346,15 +347,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"get-user\", function () {\r",
+							"pm.test(\"get-bill\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"    let response = pm.response.json();\r",
-							"    pm.collectionVariables.set(\"REFERRAL_LINK\", response.referralLink);\r",
-							"    pm.collectionVariables.set(\"GROUP_ID\", response.id);\r",
+							"    pm.collectionVariables.set(\"BILL_ID\", response.id);\r",
 							"\r",
 							"})"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -365,6 +366,45 @@
 					"raw": "{{BILL_LOCATION}}",
 					"host": [
 						"{{BILL_LOCATION}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-bill-share-of-bill",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"get-bill-share-info\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    let response = pm.response.json();\r",
+							"    pm.collectionVariables.set(\"REFERRAL_LINK\", response.referralLink);\r",
+							"    pm.collectionVariables.set(\"GROUP_ID\", response.id);\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_API}}/api/v1/bill-share/bills/{{BILL_ID}}",
+					"host": [
+						"{{BASE_API}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"bill-share",
+						"bills",
+						"{{BILL_ID}}"
 					]
 				}
 			},
@@ -457,6 +497,10 @@
 		},
 		{
 			"key": "BILL_LOCATION",
+			"value": ""
+		},
+		{
+			"key": "BILL_ID",
 			"value": ""
 		}
 	]
