@@ -1,6 +1,7 @@
 package com.snapp.dangidongi.controller;
 
 import com.snapp.dangidongi.common.Url;
+import com.snapp.dangidongi.mapper.FriendGroupMapper;
 import com.snapp.dangidongi.model.FriendGroupCreateModel;
 import com.snapp.dangidongi.model.FriendGroupModel;
 import com.snapp.dangidongi.model.UserModel;
@@ -24,7 +25,7 @@ import java.net.URI;
 public class FriendGroupController {
 
     private final FriendGroupService friendGroupService;
-
+    private final FriendGroupMapper friendGroupMapper;
 
     @PostMapping(value = Url.FRIEND_GROUP, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> createFriendGroup(@RequestBody @Validated FriendGroupCreateModel friendGroupCreateModel) {
@@ -49,14 +50,15 @@ public class FriendGroupController {
     @SneakyThrows
     @GetMapping(value = Url.FRIEND_GROUP_ID, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FriendGroupModel> getGroupById(@PathVariable Long id) {
-        FriendGroupModel model = friendGroupService.findById(id);
+        FriendGroupModel model = friendGroupMapper.entityToModel(friendGroupService.findById(id));
         return ResponseEntity.ok(model);
     }
 
     @SneakyThrows
     @GetMapping(value = Url.FRIEND_GROUP_CREATOR_ID, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<FriendGroupModel>> getOwnFriendGroups(@PathVariable("creator-id") Long userId, @ParameterObject Pageable pageable) {
-        Page<FriendGroupModel> models = friendGroupService.findGroupByCreatorId(userId, pageable);
+        Page<FriendGroupModel> models = friendGroupService.findGroupByCreatorId(userId, pageable)
+                .map(friendGroupMapper::entityToModel);
         return ResponseEntity.ok(models);
     }
 
@@ -71,7 +73,7 @@ public class FriendGroupController {
     @SneakyThrows
     @GetMapping(value = Url.FRIEND_GROUP_ME, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<FriendGroupModel>> getMyFriendGroups(@PathVariable("user-id") Long userId, @ParameterObject Pageable pageable) {
-        Page<FriendGroupModel> models = friendGroupService.getMyFriendGroups(userId, pageable);
+        Page<FriendGroupModel> models = friendGroupService.getMyFriendGroups(userId, pageable).map(friendGroupMapper::entityToModel);
         return ResponseEntity.ok(models);
     }
 }

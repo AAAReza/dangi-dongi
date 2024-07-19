@@ -1,6 +1,7 @@
 package com.snapp.dangidongi.controller;
 
 import com.snapp.dangidongi.common.Url;
+import com.snapp.dangidongi.mapper.UserMapper;
 import com.snapp.dangidongi.model.UserModel;
 import com.snapp.dangidongi.service.UserService;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ import java.net.URI;
 public class UserController {
 
     private final UserService userService;
-
+    private final UserMapper userMapper;
 
     @PostMapping(value = Url.USERS, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> createUser(@RequestBody @Validated UserModel user) {
@@ -39,20 +40,20 @@ public class UserController {
     @SneakyThrows
     @GetMapping(value = Url.USERS_ID, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserModel> getUserById(@PathVariable Long id) {
-        UserModel model = userService.findById(id);
+        UserModel model = userMapper.userEntityToUserModel(userService.findById(id));
         return ResponseEntity.ok(model);
     }
 
     @SneakyThrows
     @GetMapping(value = Url.USERS_PHONE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserModel> getUserByPhone(@PathVariable Long phone) {
-        UserModel model = userService.findByPhone(phone);
+        UserModel model = userMapper.userEntityToUserModel(userService.findByPhone(phone));
         return ResponseEntity.ok(model);
     }
 
     @GetMapping(value = Url.USERS, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<UserModel>> getUsers(@ParameterObject Pageable pageable) {
-        Page<UserModel> models = userService.findAll(pageable);
+        Page<UserModel> models = userService.findAll(pageable).map(userMapper::userEntityToUserModel);
         return ResponseEntity.ok(models);
     }
 
@@ -66,7 +67,7 @@ public class UserController {
 
     @GetMapping(value = Url.USERS_GROUP_GROUP_ID, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<UserModel>> getUsersInGroup(@PathVariable("group-id") Long groupId, @ParameterObject Pageable pageable) {
-        Page<UserModel> usersInGroup = userService.getUsersInGroup(groupId, pageable);
+        Page<UserModel> usersInGroup = userService.getUsersInGroup(groupId, pageable).map(userMapper::userEntityToUserModel);
         return ResponseEntity.ok(usersInGroup);
     }
 

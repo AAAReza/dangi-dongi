@@ -23,27 +23,24 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
-    public UserModel findById(Long id) throws NotFoundException {
-        UserEntity user = userRepository.findById(id).orElseThrow(NotFoundException::new);
-        return userMapper.userEntityToUserModel(user);
+    public UserEntity findById(Long id) throws NotFoundException {
+        return userRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
-    public UserModel findByPhone(Long phone) throws NotFoundException {
-        UserEntity user = userRepository.findByPhone(phone).orElseThrow(NotFoundException::new);
-        return userMapper.userEntityToUserModel(user);
+    public UserEntity findByPhone(Long phone) throws NotFoundException {
+        return userRepository.findByPhone(phone).orElseThrow(NotFoundException::new);
     }
 
 
-    public Page<UserModel> findAll(Pageable pageable) {
-        Page<UserEntity> users = userRepository.findAll(pageable);
-        return users.map(userMapper::userEntityToUserModel);
+    public Page<UserEntity> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
 
-    public Page<UserModel> getUsersInGroup(Long groupId, Pageable pageable) {
-        return userRepository.findByUserFriendGroups_Group_Id(groupId, pageable).map(userMapper::userEntityToUserModel);
+    public Page<UserEntity> getUsersInGroup(Long groupId, Pageable pageable) {
+        return userRepository.findByUserFriendGroups_Group_Id(groupId, pageable);
     }
 }
