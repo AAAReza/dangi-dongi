@@ -25,9 +25,10 @@ public class FriendGroupEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CREATOR_ID")
     private UserEntity creator;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "GROUP_ID")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "group")
     private List<UserFriendGroupEntity> userFriendGroups;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "friendGroup")
+    private List<BillEntity> bills;
     private String referralLink;
     @CreationTimestamp
     private LocalDateTime creationTime;

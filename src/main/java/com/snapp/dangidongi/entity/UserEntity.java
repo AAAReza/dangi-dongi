@@ -28,8 +28,7 @@ public class UserEntity {
     private Long phone;
     private Gender gender;
     private LocalDate birthday;
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "TB_USER_FRIEND_GROUP", joinColumns = @JoinColumn(name = "USER_ID"))
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<UserFriendGroupEntity> userFriendGroups;
     @CreationTimestamp
     private LocalDateTime creationTime;
