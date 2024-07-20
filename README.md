@@ -63,6 +63,7 @@ run postman collection file in postman directory and execute all test in collect
 * add new integration and postman test for other test scenario
 * connect to an code analyzer like sonarqube for check code quality
 * connect to an external database like MySql
+* add monitoring infra based on grafana observability platform
 * migrate to microservice and spring cloud by :
 * * enable service discovery/registry like consul in development and kubernetes service discovery in production
 * * add gateway module service for authentication/authorization by connecting to identity providers and routing to service module
