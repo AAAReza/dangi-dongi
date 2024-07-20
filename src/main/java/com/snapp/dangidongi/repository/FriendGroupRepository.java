@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FriendGroupRepository extends JpaRepository<FriendGroupEntity, Long> {
 
-    Page<FriendGroupEntity> findByCreator_Id(Long creatorId, Pageable pageable);
+  Page<FriendGroupEntity> findByCreator_Id(Long creatorId, Pageable pageable);
 
-    Page<FriendGroupEntity> findByUserFriendGroups_User_Id(Long userId, Pageable pageable);
-
-
+  Page<FriendGroupEntity> findByUserFriendGroups_User_Id(Long userId, Pageable pageable);
 }

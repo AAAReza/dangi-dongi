@@ -15,35 +15,33 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class UserService {
 
+  private final UserRepository userRepository;
+  private final UserMapper userMapper;
+  private final PasswordEncoder passwordEncoder;
 
-    private final UserRepository userRepository;
-    private final UserMapper userMapper;
-    private final PasswordEncoder passwordEncoder;
+  public UserEntity save(UserModel user) {
+    UserEntity userEntity = userMapper.userModelToUserEntity(user);
+    userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+    return userRepository.save(userEntity);
+  }
 
-    public UserEntity save(UserModel user) {
-        UserEntity userEntity = userMapper.userModelToUserEntity(user);
-        userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(userEntity);
-    }
+  public UserEntity findById(Long id) throws NotFoundException {
+    return userRepository.findById(id).orElseThrow(NotFoundException::new);
+  }
 
-    public UserEntity findById(Long id) throws NotFoundException {
-        return userRepository.findById(id).orElseThrow(NotFoundException::new);
-    }
+  public UserEntity findByPhone(Long phone) throws NotFoundException {
+    return userRepository.findByPhone(phone).orElseThrow(NotFoundException::new);
+  }
 
-    public UserEntity findByPhone(Long phone) throws NotFoundException {
-        return userRepository.findByPhone(phone).orElseThrow(NotFoundException::new);
-    }
+  public Page<UserEntity> findAll(Pageable pageable) {
+    return userRepository.findAll(pageable);
+  }
 
+  public void deleteById(Long id) {
+    userRepository.deleteById(id);
+  }
 
-    public Page<UserEntity> findAll(Pageable pageable) {
-        return userRepository.findAll(pageable);
-    }
-
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);
-    }
-
-    public Page<UserEntity> getUsersInGroup(Long groupId, Pageable pageable) {
-        return userRepository.findByUserFriendGroups_Group_Id(groupId, pageable);
-    }
+  public Page<UserEntity> getUsersInGroup(Long groupId, Pageable pageable) {
+    return userRepository.findByUserFriendGroups_Group_Id(groupId, pageable);
+  }
 }

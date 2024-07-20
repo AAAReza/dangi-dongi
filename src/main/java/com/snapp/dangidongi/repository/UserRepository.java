@@ -13,12 +13,12 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
+  Optional<UserEntity> findByPhone(Long phone);
 
-    Optional<UserEntity> findByPhone(Long phone);
+  @Query(
+      "select u from UserEntity u inner join UserFriendGroupEntity uf on  uf.user.id = u.id where uf.group.id = :groupId")
+  Page<UserEntity> findByUserFriendGroups_Group_Id(
+      @Param("groupId") Long groupId, Pageable pageable);
 
-
-    @Query("select u from UserEntity u inner join UserFriendGroupEntity uf on  uf.user.id = u.id where uf.group.id = :groupId")
-    Page<UserEntity> findByUserFriendGroups_Group_Id(@Param("groupId") Long groupId, Pageable pageable);
-
-    Optional<UserEntity> findByUsername(String username);
+  Optional<UserEntity> findByUsername(String username);
 }

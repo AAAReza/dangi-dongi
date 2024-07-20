@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "118885ae-1d0d-49bc-b951-1f7c46bcd2ca",
+		"_postman_id": "7036482c-cb74-453c-93d7-f0e3c80db7a6",
 		"name": "dangi-dongi",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "3067260"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -487,13 +486,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"add-bill-to-group\", function () {\r",
+							"pm.test(\"add-payment-info\", function () {\r",
 							"    pm.response.to.have.status(201);\r",
-							"    pm.collectionVariables.set(\"BILL_LOCATION\", pm.response.headers.get('Location'));\r",
+							"    pm.collectionVariables.set(\"PAYMENT_INFO_LOCATION\", pm.response.headers.get('Location'));\r",
 							"})"
 						],
-						"type": "text/javascript",
-						"packages": {}
+						"type": "text/javascript"
 					}
 				}
 			],
@@ -541,12 +539,11 @@
 							"pm.test(\"get-bill-share-info\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"    let response = pm.response.json();\r",
-							"    pm.collectionVariables.set(\"BILL_SHARE_ID\", response.content[0].id);\r",
+							"    pm.collectionVariables.set(\"PAYMENT_INFO_ID\", response.content[0].id);\r",
 							"\r",
 							"})"
 						],
-						"type": "text/javascript",
-						"packages": {}
+						"type": "text/javascript"
 					}
 				}
 			],
@@ -662,6 +659,14 @@
 		},
 		{
 			"key": "BILL_SHARE_ID",
+			"value": ""
+		},
+		{
+			"key": "PAYMENT_INFO_LOCATION",
+			"value": ""
+		},
+		{
+			"key": "PAYMENT_INFO_ID",
 			"value": ""
 		}
 	]

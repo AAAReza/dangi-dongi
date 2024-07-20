@@ -14,14 +14,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class BillShareModel {
 
+  private Long id;
+  private BigDecimal shareAmount;
 
-    private Long id;
-    private BigDecimal shareAmount;
+  private UserModel user;
+  private FriendGroupModel group;
 
-    private UserModel user;
-    private FriendGroupModel group;
-
-    private BillModel bill;
-    private LocalDateTime creationTime;
-
+  private BillModel bill;
+  private LocalDateTime creationTime;
 }

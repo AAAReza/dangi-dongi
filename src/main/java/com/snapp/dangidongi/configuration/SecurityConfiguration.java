@@ -18,33 +18,35 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authorize) -> authorize.requestMatchers(
-                                        "/swagger-ui.html",
-                                        "/webjars/**",
-                                        "/v3/api-docs/**",
-                                        "/swagger-ui/**",
-                                        "/api/v1/register"
-                                ).permitAll()
-                                .anyRequest().authenticated()
-                ).httpBasic(Customizer.withDefaults())
-        ;
-        return http.build();
-    }
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(
+            (authorize) ->
+                authorize
+                    .requestMatchers(
+                        "/swagger-ui.html",
+                        "/webjars/**",
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/api/v1/register")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
+        .httpBasic(Customizer.withDefaults());
+    return http.build();
+  }
 
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider(UserDetailService userDetailService) {
-        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-        auth.setUserDetailsService(userDetailService);
-        auth.setPasswordEncoder(passwordEncoder());
-        return auth;
-    }
+  @Bean
+  public DaoAuthenticationProvider authenticationProvider(UserDetailService userDetailService) {
+    DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+    auth.setUserDetailsService(userDetailService);
+    auth.setPasswordEncoder(passwordEncoder());
+    return auth;
+  }
 }

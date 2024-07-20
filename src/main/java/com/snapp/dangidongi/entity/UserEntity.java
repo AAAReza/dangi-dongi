@@ -18,21 +18,22 @@ import java.util.List;
 @AllArgsConstructor
 public class UserEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String username;
-    private String firstname;
-    private String lastname;
-    private String email;
-    private String password;
-    private Long phone;
-    private Gender gender;
-    private Role role;
-    private LocalDate birthday;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<UserFriendGroupEntity> userFriendGroups;
-    @CreationTimestamp
-    private LocalDateTime creationTime;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
+  private String username;
+  private String firstname;
+  private String lastname;
+  private String email;
+  private String password;
+  private Long phone;
+  private Gender gender;
+  private Role role;
+  private LocalDate birthday;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+  private List<UserFriendGroupEntity> userFriendGroups;
+
+  @CreationTimestamp private LocalDateTime creationTime;
 }

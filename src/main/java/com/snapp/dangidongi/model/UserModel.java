@@ -14,21 +14,16 @@ import java.util.List;
 @Data
 @Builder
 public class UserModel {
-    private Long id;
-    @NotBlank
-    private String username;
-    @NotBlank
-    private String firstname;
-    @NotBlank
-    private String lastname;
-    private String email;
-    private List<FriendGroupModel> friendGroups;
-    @NotBlank
-    private String password;
-    private Long phone;
-    private Gender gender;
-    @NotNull
-    private Role role;
-    private LocalDate birthday;
-    private LocalDateTime creationTime;
+  private Long id;
+  @NotBlank private String username;
+  @NotBlank private String firstname;
+  @NotBlank private String lastname;
+  private String email;
+  private List<FriendGroupModel> friendGroups;
+  @NotBlank private String password;
+  private Long phone;
+  private Gender gender;
+  @NotNull private Role role;
+  private LocalDate birthday;
+  private LocalDateTime creationTime;
 }

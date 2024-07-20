@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BillRepository extends JpaRepository<BillEntity, Long> {
 
+  Page<BillEntity> findByFriendGroup_Id(Long id, Pageable pageable);
 
-    Page<BillEntity> findByFriendGroup_Id(Long id, Pageable pageable);
-
+  boolean deleteByIdAndBillOwner_Id(Long id, Long ownerId);
 }

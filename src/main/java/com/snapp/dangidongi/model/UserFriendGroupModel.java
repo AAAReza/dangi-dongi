@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserFriendGroupModel {
 
-    private Long id;
-    private UserModel user;
-    private FriendGroupModel group;
-    private LocalDateTime joinToGroupTime;
+  private Long id;
+  private UserModel user;
+  private FriendGroupModel group;
+  private LocalDateTime joinToGroupTime;
 }

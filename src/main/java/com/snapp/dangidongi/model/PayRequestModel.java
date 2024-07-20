@@ -11,7 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PayRequestModel {
 
-
-    private Long billShare;
-
+  private Long billShare;
 }

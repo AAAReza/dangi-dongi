@@ -16,18 +16,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PaymentInfoEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String trackId;
-    private BigDecimal amount;
-    private LocalDateTime paymentDate;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "BILL_SHARE_ID")
-    private BillShareEntity billShare;
+  private String trackId;
+  private BigDecimal amount;
+  private LocalDateTime paymentDate;
 
-    @CreationTimestamp
-    private LocalDateTime creationTime;
+  @ManyToOne
+  @JoinColumn(name = "BILL_SHARE_ID")
+  private BillShareEntity billShare;
 
+  @CreationTimestamp private LocalDateTime creationTime;
 }

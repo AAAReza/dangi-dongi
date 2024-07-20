@@ -14,35 +14,35 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 import java.util.Objects;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = UserMapper.class)
 public interface FriendGroupMapper {
 
-    FriendGroupMapper INSTANCE = Mappers.getMapper(FriendGroupMapper.class);
+  FriendGroupMapper INSTANCE = Mappers.getMapper(FriendGroupMapper.class);
 
-    @Mapping(target = "groupUsers", source = "userFriendGroups", qualifiedByName = "getUsersInGroup")
-    @Mapping(target = "bills", ignore = true)
-    FriendGroupModel entityToModel(FriendGroupEntity entity);
+  @Mapping(target = "groupUsers", source = "userFriendGroups", qualifiedByName = "getUsersInGroup")
+  @Mapping(target = "bills", ignore = true)
+  @Mapping(target = "creator.password", ignore = true)
+  FriendGroupModel entityToModel(FriendGroupEntity entity);
 
-    @Named("getUsersInGroup")
-    default List<UserModel> getUsersInGroup(List<UserFriendGroupEntity> entity) {
-        if (Objects.isNull(entity)) {
-            return null;
-        }
-        List<UserEntity> userEntities = entity.stream().map(UserFriendGroupEntity::getUser).toList();
-        userEntities.forEach(e -> {
-            if (Objects.nonNull(e))
-                e.setUserFriendGroups(null);
-        });
-        return userEntities.stream().map(UserMapper.INSTANCE::userEntityToUserModel).toList();
+  @Named("getUsersInGroup")
+  default List<UserModel> getUsersInGroup(List<UserFriendGroupEntity> entity) {
+    if (Objects.isNull(entity)) {
+      return null;
     }
+    List<UserEntity> userEntities = entity.stream().map(UserFriendGroupEntity::getUser).toList();
+    userEntities.forEach(
+        e -> {
+          if (Objects.nonNull(e)) e.setUserFriendGroups(null);
+        });
+    return userEntities.stream().map(UserMapper.INSTANCE::userEntityToUserModel).toList();
+  }
 
-    FriendGroupEntity modelToEntity(FriendGroupModel model);
+  FriendGroupEntity modelToEntity(FriendGroupModel model);
 
-    @Mapping(source = "creator", target = "creator.id")
-    FriendGroupEntity createModelToEntity(FriendGroupCreateModel model);
+  @Mapping(source = "creator", target = "creator.id")
+  FriendGroupEntity createModelToEntity(FriendGroupCreateModel model);
 
+  List<FriendGroupModel> entitiesToModels(List<FriendGroupEntity> entities);
 
-    List<FriendGroupModel> entitiesToModels(List<FriendGroupEntity> entities);
-
-    List<FriendGroupEntity> modelsToEntities(List<FriendGroupModel> models);
+  List<FriendGroupEntity> modelsToEntities(List<FriendGroupModel> models);
 }

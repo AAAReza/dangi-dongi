@@ -15,33 +15,31 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class BillService {
 
+  private final BillRepository billRepository;
+  private final BillMapper billMapper;
+  private final BillShareService billShareService;
 
-    private final BillRepository billRepository;
-    private final BillMapper billMapper;
-    private final BillShareService billShareService;
+  @Transactional
+  public BillEntity save(BillModel bill) throws NotFoundException {
+    BillEntity billEntity = billMapper.billModelToBillEntity(bill);
+    billEntity = billRepository.save(billEntity);
+    billShareService.calculateBillShareInGroup(billEntity, bill.getFriendGroup().getId());
+    return billEntity;
+  }
 
-    @Transactional
-    public BillEntity save(BillModel bill) throws NotFoundException {
-        BillEntity billEntity = billMapper.billModelToBillEntity(bill);
-        billEntity = billRepository.save(billEntity);
-        billShareService.calculateBillShareInGroup(billEntity, bill.getFriendGroup().getId());
-        return billEntity;
-    }
+  public BillEntity findById(Long id) throws NotFoundException {
+    return billRepository.findById(id).orElseThrow(NotFoundException::new);
+  }
 
-    public BillEntity findById(Long id) throws NotFoundException {
-        return billRepository.findById(id).orElseThrow(NotFoundException::new);
-    }
+  public Page<BillEntity> findAll(Pageable pageable) {
+    return billRepository.findAll(pageable);
+  }
 
+  public boolean deleteByIdAndOwnerId(Long billOwnerId, Long id) {
+    return billRepository.deleteByIdAndBillOwner_Id(billOwnerId, id);
+  }
 
-    public Page<BillEntity> findAll(Pageable pageable) {
-        return billRepository.findAll(pageable);
-    }
-
-    public void deleteById(Long id) {
-        billRepository.deleteById(id);
-    }
-
-    public Page<BillEntity> getBillsInGroup(Long groupId, Pageable pageable) {
-        return billRepository.findByFriendGroup_Id(groupId, pageable);
-    }
+  public Page<BillEntity> getBillsInGroup(Long groupId, Pageable pageable) {
+    return billRepository.findByFriendGroup_Id(groupId, pageable);
+  }
 }

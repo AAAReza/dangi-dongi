@@ -11,21 +11,21 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.Objects;
 
-@Mapper(componentModel = "spring")
+@Mapper(
+    componentModel = "spring",
+    uses = {UserMapper.class, BillShareMapper.class})
 public interface PaymentInfoMapper {
 
-    PaymentInfoMapper INSTANCE = Mappers.getMapper(PaymentInfoMapper.class);
+  PaymentInfoMapper INSTANCE = Mappers.getMapper(PaymentInfoMapper.class);
 
-    @Mapping(target = "billShare", source = "billShare", qualifiedByName = "getBillShare")
-    PaymentInfoModel paymentInfoEntityToPaymentInfoModel(PaymentInfoEntity paymentInfoEntity);
+  @Mapping(target = "billShare", source = "billShare", qualifiedByName = "getBillShare")
+  PaymentInfoModel paymentInfoEntityToPaymentInfoModel(PaymentInfoEntity paymentInfoEntity);
 
-    @Named("getBillShare")
-    default BillShareModel getBillShare(BillShareEntity billShareEntity) {
-        if (Objects.isNull(billShareEntity)) {
-            return null;
-        }
-        return BillShareMapper.INSTANCE.billShareEntityToBillShareModel(billShareEntity);
+  @Named("getBillShare")
+  default BillShareModel getBillShare(BillShareEntity billShareEntity) {
+    if (Objects.isNull(billShareEntity)) {
+      return null;
     }
-
-
+    return BillShareMapper.INSTANCE.billShareEntityToBillShareModel(billShareEntity);
+  }
 }

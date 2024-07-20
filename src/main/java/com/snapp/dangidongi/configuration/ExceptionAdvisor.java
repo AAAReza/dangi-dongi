@@ -15,30 +15,43 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ExceptionAdvisor {
 
+  @ExceptionHandler(value = DangiDongiException.class)
+  public ResponseEntity<ErrorModel> handleDangiDongiException(DangiDongiException ex) {
+    ErrorModel errorResponse =
+        ErrorModel.builder()
+            .description(ex.getErrors().getDescription())
+            .errorCode(ex.getErrors().getCode())
+            .metadata(ex.getMessage())
+            .build();
+    return new ResponseEntity<>(errorResponse, ex.getErrors().getStatus());
+  }
 
-    @ExceptionHandler(value = DangiDongiException.class)
-    public ResponseEntity<ErrorModel> handleDangiDongiException(DangiDongiException ex) {
-        ErrorModel errorResponse = ErrorModel.builder()
-                .description(ex.getErrors().getDescription())
-                .errorCode(ex.getErrors().getCode())
-                .metadata(ex.getMessage()).build();
-        return new ResponseEntity<>(errorResponse, ex.getErrors().getStatus());
-    }
+  @ExceptionHandler(value = MethodArgumentNotValidException.class)
+  public ResponseEntity<ErrorModel> handleConstraintViolationException(
+      MethodArgumentNotValidException ex) {
+    ErrorModel errorModel =
+        ErrorModel.builder()
+            .description(Errors.INVALID_REQUEST.getDescription())
+            .metadata(
+                ex.getBindingResult().getFieldErrors().stream()
+                    .map(
+                        fieldError ->
+                            "[" + fieldError.getField() + "] : " + fieldError.getDefaultMessage())
+                    .collect(Collectors.joining(", ")))
+            .errorCode(Errors.INVALID_REQUEST.getCode())
+            .build();
+    return new ResponseEntity<ErrorModel>(errorModel, HttpStatus.BAD_REQUEST);
+  }
 
-
-    @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorModel> handleConstraintViolationException(MethodArgumentNotValidException ex) {
-        ErrorModel errorModel = ErrorModel.builder().description(Errors.INVALID_REQUEST.getDescription())
-                .metadata(ex.getBindingResult().getFieldErrors().stream().map(fieldError -> "[" + fieldError.getField() + "] : " + fieldError.getDefaultMessage())
-                        .collect(Collectors.joining(", "))).errorCode(Errors.INVALID_REQUEST.getCode()).build();
-        return new ResponseEntity<ErrorModel>(errorModel, HttpStatus.BAD_REQUEST);
-    }
-
-
-    @ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<ErrorModel> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
-        ErrorModel errorModel = ErrorModel.builder().description(Errors.INVALID_REQUEST.getDescription())
-                .metadata(ex.getMessage()).errorCode(Errors.INVALID_REQUEST.getCode()).build();
-        return new ResponseEntity<ErrorModel>(errorModel, HttpStatus.BAD_REQUEST);
-    }
+  @ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
+  public ResponseEntity<ErrorModel> handleSQLIntegrityConstraintViolationException(
+      SQLIntegrityConstraintViolationException ex) {
+    ErrorModel errorModel =
+        ErrorModel.builder()
+            .description(Errors.INVALID_REQUEST.getDescription())
+            .metadata(ex.getMessage())
+            .errorCode(Errors.INVALID_REQUEST.getCode())
+            .build();
+    return new ResponseEntity<ErrorModel>(errorModel, HttpStatus.BAD_REQUEST);
+  }
 }

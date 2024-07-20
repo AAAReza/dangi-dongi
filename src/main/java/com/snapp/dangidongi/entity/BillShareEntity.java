@@ -1,11 +1,11 @@
 package com.snapp.dangidongi.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "TB_BILL_SHARE")
@@ -16,29 +16,35 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class BillShareEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private BigDecimal shareAmount;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_FRIEND_GROUP_ID")
-    private UserFriendGroupEntity userFriendGroup;
+  private BigDecimal shareAmount;
 
-    @ManyToOne
-    @JoinColumn(name = "BILL_ID")
-    private BillEntity bill;
-    @CreationTimestamp
-    private LocalDateTime creationTime;
+  @ManyToOne
+  @JoinColumn(name = "USER_FRIEND_GROUP_ID")
+  private UserFriendGroupEntity userFriendGroup;
 
+  @ManyToOne
+  @JoinColumn(name = "BILL_ID")
+  private BillEntity bill;
 
-    @Transient
-    public FriendGroupEntity getGroup() {
-        return userFriendGroup.getGroup();
+  @CreationTimestamp private LocalDateTime creationTime;
+
+  @Transient
+  public FriendGroupEntity getGroup() {
+    if (Objects.nonNull(userFriendGroup)) {
+      return userFriendGroup.getGroup();
     }
+    return null;
+  }
 
-    @Transient
-    public UserEntity getUser() {
-        return userFriendGroup.getUser();
+  @Transient
+  public UserEntity getUser() {
+    if (Objects.nonNull(userFriendGroup)) {
+      return userFriendGroup.getUser();
     }
+    return null;
+  }
 }

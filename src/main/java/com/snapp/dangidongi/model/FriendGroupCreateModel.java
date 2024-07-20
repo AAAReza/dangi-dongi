@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FriendGroupCreateModel {
 
-    private String name;
-    private String avatar;
-    private String description;
-    private Long creator;
-
+  private String name;
+  private String avatar;
+  private String description;
+  private Long creator;
 }

@@ -8,18 +8,20 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(
+    componentModel = "spring",
+    uses = {UserMapper.class, FriendGroupMapper.class})
 public interface UserFriendGroupMapper {
 
-    UserFriendGroupMapper INSTANCE = Mappers.getMapper(UserFriendGroupMapper.class);
+  UserFriendGroupMapper INSTANCE = Mappers.getMapper(UserFriendGroupMapper.class);
 
-    @Mapping(target = "group", ignore = true)
-    UserFriendGroupModel entityToModel(UserFriendGroupEntity entity);
+  @Mapping(target = "group", ignore = true)
+  @Mapping(target = "user.password", ignore = true)
+  UserFriendGroupModel entityToModel(UserFriendGroupEntity entity);
 
-    UserFriendGroupEntity modelToEntity(UserFriendGroupModel model);
+  UserFriendGroupEntity modelToEntity(UserFriendGroupModel model);
 
+  List<UserFriendGroupModel> entitiesToModels(List<UserFriendGroupEntity> entities);
 
-    List<UserFriendGroupModel> entitiesToModels(List<UserFriendGroupEntity> entities);
-
-    List<UserFriendGroupEntity> modelsToEntities(List<UserFriendGroupModel> models);
+  List<UserFriendGroupEntity> modelsToEntities(List<UserFriendGroupModel> models);
 }

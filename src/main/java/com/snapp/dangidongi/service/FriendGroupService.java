@@ -17,41 +17,43 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class FriendGroupService {
 
+  private final FriendGroupRepository friendGroupRepository;
+  private final FriendGroupMapper friendGroupMapper;
+  private final UserRepository userRepository;
 
-    private final FriendGroupRepository friendGroupRepository;
-    private final FriendGroupMapper friendGroupMapper;
-    private final UserRepository userRepository;
+  public FriendGroupEntity save(FriendGroupCreateModel friendGroupCreateModel) {
+    FriendGroupEntity friendGroup = friendGroupMapper.createModelToEntity(friendGroupCreateModel);
+    friendGroup.setReferralLink(
+        friendGroupCreateModel.getName().concat(friendGroupCreateModel.getCreator().toString()));
+    return friendGroupRepository.save(friendGroup);
+  }
 
-    public FriendGroupEntity save(FriendGroupCreateModel friendGroupCreateModel) {
-        FriendGroupEntity friendGroup = friendGroupMapper.createModelToEntity(friendGroupCreateModel);
-        friendGroup.setReferralLink(friendGroupCreateModel.getName().concat(friendGroupCreateModel.getCreator().toString()));
-        return friendGroupRepository.save(friendGroup);
-    }
+  public FriendGroupEntity addUserToGroup(Long groupId, Long userId) throws NotFoundException {
 
+    FriendGroupEntity friendGroupEntity =
+        friendGroupRepository.findById(groupId).orElseThrow(() -> new NotFoundException("group"));
+    UserEntity userEntity =
+        userRepository.findById(userId).orElseThrow(() -> new NotFoundException("user"));
 
-    public FriendGroupEntity addUserToGroup(Long groupId, Long userId) throws NotFoundException {
+    friendGroupEntity
+        .getUserFriendGroups()
+        .add(UserFriendGroupEntity.builder().group(friendGroupEntity).user(userEntity).build());
+    return friendGroupRepository.save(friendGroupEntity);
+  }
 
-        FriendGroupEntity friendGroupEntity = friendGroupRepository.findById(groupId).orElseThrow(() -> new NotFoundException("group"));
-        UserEntity userEntity = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("user"));
+  public FriendGroupEntity findById(Long id) throws NotFoundException {
+    return friendGroupRepository.findById(id).orElseThrow(NotFoundException::new);
+  }
 
-        friendGroupEntity.getUserFriendGroups().add(UserFriendGroupEntity.builder().group(friendGroupEntity).user(userEntity).build());
-        return friendGroupRepository.save(friendGroupEntity);
-    }
+  public void deleteById(Long id) {
+    friendGroupRepository.deleteById(id);
+  }
 
-    public FriendGroupEntity findById(Long id) throws NotFoundException {
-        return friendGroupRepository.findById(id).orElseThrow(NotFoundException::new);
-    }
+  public Page<FriendGroupEntity> findGroupByCreatorId(Long userId, Pageable pageable) {
+    return friendGroupRepository.findByCreator_Id(userId, pageable);
+  }
 
-
-    public void deleteById(Long id) {
-        friendGroupRepository.deleteById(id);
-    }
-
-    public Page<FriendGroupEntity> findGroupByCreatorId(Long userId, Pageable pageable) {
-        return friendGroupRepository.findByCreator_Id(userId, pageable);
-    }
-
-    public Page<FriendGroupEntity> getMyFriendGroups(Long userId, Pageable pageable) {
-        return friendGroupRepository.findByUserFriendGroups_User_Id(userId, pageable);
-    }
+  public Page<FriendGroupEntity> getMyFriendGroups(Long userId, Pageable pageable) {
+    return friendGroupRepository.findByUserFriendGroups_User_Id(userId, pageable);
+  }
 }

@@ -7,6 +7,7 @@ import com.snapp.dangidongi.model.FriendGroupModel;
 import com.snapp.dangidongi.model.UserModel;
 import com.snapp.dangidongi.security.UserDetail;
 import com.snapp.dangidongi.service.FriendGroupService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springdoc.core.annotations.ParameterObject;
@@ -26,57 +27,71 @@ import java.net.URI;
 @AllArgsConstructor
 public class FriendGroupController {
 
-    private final FriendGroupService friendGroupService;
-    private final FriendGroupMapper friendGroupMapper;
+  private final FriendGroupService friendGroupService;
+  private final FriendGroupMapper friendGroupMapper;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping(value = Url.FRIEND_GROUP, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> createFriendGroup(@RequestBody @Validated FriendGroupCreateModel friendGroupCreateModel) {
+  @Operation(description = "create group")
+  @PreAuthorize("hasRole('ROLE_USER')")
+  @PostMapping(
+      value = Url.FRIEND_GROUP,
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Long> createFriendGroup(
+      @RequestBody @Validated FriendGroupCreateModel friendGroupCreateModel) {
 
-        var id = friendGroupService.save(friendGroupCreateModel).getId();
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(id)
-                .toUri();
-        return ResponseEntity.created(uri).build();
-    }
+    var id = friendGroupService.save(friendGroupCreateModel).getId();
+    URI uri =
+        ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
+    return ResponseEntity.created(uri).build();
+  }
 
+  @Operation(description = "add an user to group by user id")
+  @PreAuthorize("hasRole('ROLE_USER')")
+  @SneakyThrows
+  @PostMapping(value = Url.FRIEND_GROUP_ID_USERS, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Long> addUserToFriendGroup(
+      @PathVariable("group-id") Long groupId, @PathVariable("user-id") Long userId) {
+    friendGroupService.addUserToGroup(groupId, userId);
+    return ResponseEntity.accepted().build();
+  }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @SneakyThrows
-    @PostMapping(value = Url.FRIEND_GROUP_ID_USERS, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> addUserToFriendGroup(@PathVariable("group-id") Long groupId, @PathVariable("user-id") Long userId) {
-        friendGroupService.addUserToGroup(groupId, userId);
-        return ResponseEntity.accepted().build();
-    }
+  @Operation(description = "get information of an group")
+  @SneakyThrows
+  @GetMapping(value = Url.FRIEND_GROUP_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<FriendGroupModel> getGroupById(@PathVariable Long id) {
+    FriendGroupModel model = friendGroupMapper.entityToModel(friendGroupService.findById(id));
+    return ResponseEntity.ok(model);
+  }
 
-    @SneakyThrows
-    @GetMapping(value = Url.FRIEND_GROUP_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FriendGroupModel> getGroupById(@PathVariable Long id) {
-        FriendGroupModel model = friendGroupMapper.entityToModel(friendGroupService.findById(id));
-        return ResponseEntity.ok(model);
-    }
+  @Operation(description = "get all group that created by user ")
+  @SneakyThrows
+  @GetMapping(value = Url.FRIEND_GROUP_CREATOR_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Page<FriendGroupModel>> getOwnFriendGroups(
+      @PathVariable("creator-id") Long userId, @ParameterObject Pageable pageable) {
+    Page<FriendGroupModel> models =
+        friendGroupService
+            .findGroupByCreatorId(userId, pageable)
+            .map(friendGroupMapper::entityToModel);
+    return ResponseEntity.ok(models);
+  }
 
-    @SneakyThrows
-    @GetMapping(value = Url.FRIEND_GROUP_CREATOR_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<FriendGroupModel>> getOwnFriendGroups(@PathVariable("creator-id") Long userId, @ParameterObject Pageable pageable) {
-        Page<FriendGroupModel> models = friendGroupService.findGroupByCreatorId(userId, pageable)
-                .map(friendGroupMapper::entityToModel);
-        return ResponseEntity.ok(models);
-    }
+  @Operation(description = "delete an group by group id- only admin can call this service")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @DeleteMapping(value = Url.FRIEND_GROUP_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<UserModel> deleteFriendGroupById(@PathVariable Long id) {
+    friendGroupService.deleteById(id);
+    return ResponseEntity.ok().build();
+  }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping(value = Url.FRIEND_GROUP_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserModel> deleteFriendGroupById(@PathVariable Long id) {
-        friendGroupService.deleteById(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @SneakyThrows
-    @GetMapping(value = Url.FRIEND_GROUP_ME, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<FriendGroupModel>> getMyFriendGroups(@AuthenticationPrincipal UserDetail userDetails, @ParameterObject Pageable pageable) {
-        Page<FriendGroupModel> models = friendGroupService.getMyFriendGroups(userDetails.getUser().getId(), pageable).map(friendGroupMapper::entityToModel);
-        return ResponseEntity.ok(models);
-    }
+  @Operation(description = "get all groups that i member of it")
+  @SneakyThrows
+  @GetMapping(value = Url.FRIEND_GROUP_ME, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Page<FriendGroupModel>> getMyFriendGroups(
+      @AuthenticationPrincipal UserDetail userDetails, @ParameterObject Pageable pageable) {
+    Page<FriendGroupModel> models =
+        friendGroupService
+            .getMyFriendGroups(userDetails.getUser().getId(), pageable)
+            .map(friendGroupMapper::entityToModel);
+    return ResponseEntity.ok(models);
+  }
 }

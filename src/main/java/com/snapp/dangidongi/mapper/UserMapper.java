@@ -16,29 +16,29 @@ import java.util.Objects;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+  UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    @Mapping(target = "friendGroups", source = "userFriendGroups", qualifiedByName = "getGroups")
-    UserModel userEntityToUserModel(UserEntity userEntity);
+  @Mapping(target = "friendGroups", source = "userFriendGroups", qualifiedByName = "getGroups")
+  @Mapping(target = "password", ignore = true)
+  UserModel userEntityToUserModel(UserEntity userEntity);
 
-    @Named("getGroups")
-    default List<FriendGroupModel> getGroups(List<UserFriendGroupEntity> entity) {
-        if (Objects.isNull(entity)) {
-            return null;
-        }
-        List<FriendGroupEntity> groupEntities = entity.stream()
-                .map(UserFriendGroupEntity::getGroup).toList();
-        groupEntities.forEach(e -> {
-            if (Objects.nonNull(e))
-                e.setUserFriendGroups(null);
-        });
-        return groupEntities.stream().map(FriendGroupMapper.INSTANCE::entityToModel).toList();
+  @Named("getGroups")
+  default List<FriendGroupModel> getGroups(List<UserFriendGroupEntity> entity) {
+    if (Objects.isNull(entity)) {
+      return null;
     }
+    List<FriendGroupEntity> groupEntities =
+        entity.stream().map(UserFriendGroupEntity::getGroup).toList();
+    groupEntities.forEach(
+        e -> {
+          if (Objects.nonNull(e)) e.setUserFriendGroups(null);
+        });
+    return groupEntities.stream().map(FriendGroupMapper.INSTANCE::entityToModel).toList();
+  }
 
-    UserEntity userModelToUserEntity(UserModel userModel);
+  UserEntity userModelToUserEntity(UserModel userModel);
 
+  List<UserModel> userEntitiesToUserModels(List<UserEntity> userEntities);
 
-    List<UserModel> userEntitiesToUserModels(List<UserEntity> userEntities);
-
-    List<UserEntity> userModelsToUserEntities(List<UserModel> userModels);
+  List<UserEntity> userModelsToUserEntities(List<UserModel> userModels);
 }

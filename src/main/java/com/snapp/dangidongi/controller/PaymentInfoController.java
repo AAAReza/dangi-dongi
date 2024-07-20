@@ -6,6 +6,9 @@ import com.snapp.dangidongi.mapper.PaymentInfoMapper;
 import com.snapp.dangidongi.model.PayRequestModel;
 import com.snapp.dangidongi.model.PaymentInfoModel;
 import com.snapp.dangidongi.service.PaymentInfoService;
+import io.swagger.v3.oas.annotations.Operation;
+import java.net.URI;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -16,9 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.util.List;
-
 @RestController
 @AllArgsConstructor
 public class PaymentInfoController {
@@ -27,6 +27,7 @@ public class PaymentInfoController {
     private final PaymentInfoMapper paymentInfoMapper;
 
 
+    @Operation(description = "payment of an share")
     @PostMapping(value = Url.PAYMENT_INFO, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PaymentInfoModel> payment(@RequestBody PayRequestModel payRequestModel) throws NotAllowedException {
         Long id = paymentInfoService.save(payRequestModel);
@@ -38,7 +39,7 @@ public class PaymentInfoController {
         return ResponseEntity.created(uri).build();
     }
 
-
+    @Operation(description = "search payment info by bill or group or user ")
     @GetMapping(value = Url.PAYMENT_INFO, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<PaymentInfoModel>> getAllPaymentInfoOfBill(
             @RequestParam(value = "billId", required = false) Long billId,

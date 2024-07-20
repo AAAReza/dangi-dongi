@@ -21,47 +21,46 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PaymentInfoService {
 
+  private final PaymentInfoRepository paymentInfoRepository;
+  private final PaymentInfoMapper paymentInfoMapper;
+  private final BillShareRepository billShareRepository;
 
-    private final PaymentInfoRepository paymentInfoRepository;
-    private final PaymentInfoMapper paymentInfoMapper;
-    private final BillShareRepository billShareRepository;
-
-    public Long save(PayRequestModel payRequestModel) throws NotAllowedException {
-        BillShareEntity billShareEntity = billShareRepository.findById(payRequestModel.getBillShare()).get();
-        if (paymentInfoRepository.findByBillShare_Id(billShareEntity.getId()).isPresent()) {
-            throw new NotAllowedException();
-        }
-
-        PaymentInfoEntity paymentInfoEntity = PaymentInfoEntity.builder()
-                .billShare(billShareEntity)
-                .amount(billShareEntity.getShareAmount())
-                .trackId(UUID.randomUUID().toString())
-                .paymentDate(LocalDateTime.now())
-                .build();
-        return paymentInfoRepository.save(paymentInfoEntity).getId();
+  public Long save(PayRequestModel payRequestModel) throws NotAllowedException {
+    BillShareEntity billShareEntity =
+        billShareRepository.findById(payRequestModel.getBillShare()).get();
+    if (paymentInfoRepository.findByBillShare_Id(billShareEntity.getId()).isPresent()) {
+      throw new NotAllowedException();
     }
 
-    public PaymentInfoModel findById(Long id) throws NotFoundException {
-        PaymentInfoEntity paymentInfo = paymentInfoRepository.findById(id).orElseThrow(NotFoundException::new);
-        return paymentInfoMapper.paymentInfoEntityToPaymentInfoModel(paymentInfo);
-    }
+    PaymentInfoEntity paymentInfoEntity =
+        PaymentInfoEntity.builder()
+            .billShare(billShareEntity)
+            .amount(billShareEntity.getShareAmount())
+            .trackId(UUID.randomUUID().toString())
+            .paymentDate(LocalDateTime.now())
+            .build();
+    return paymentInfoRepository.save(paymentInfoEntity).getId();
+  }
 
+  public PaymentInfoModel findById(Long id) throws NotFoundException {
+    PaymentInfoEntity paymentInfo =
+        paymentInfoRepository.findById(id).orElseThrow(NotFoundException::new);
+    return paymentInfoMapper.paymentInfoEntityToPaymentInfoModel(paymentInfo);
+  }
 
-    public Page<PaymentInfoEntity> findAll(Pageable pageable) {
-        return paymentInfoRepository.findAll(pageable);
-    }
+  public Page<PaymentInfoEntity> findAll(Pageable pageable) {
+    return paymentInfoRepository.findAll(pageable);
+  }
 
+  public Page<PaymentInfoEntity> getPaymentInfosOfBill(Long billId, Pageable pageable) {
+    return paymentInfoRepository.findByBillShare_Bill_Id(billId, pageable);
+  }
 
-    public Page<PaymentInfoEntity> getPaymentInfosOfBill(Long billId, Pageable pageable) {
-        return paymentInfoRepository.findByBillShare_Bill_Id(billId, pageable);
-    }
+  public Page<PaymentInfoEntity> getAllPaymentInfosInGroup(Long groupId, Pageable pageable) {
+    return paymentInfoRepository.findByBillShare_UserFriendGroup_Group_Id(groupId, pageable);
+  }
 
-
-    public Page<PaymentInfoEntity> getAllPaymentInfosInGroup(Long groupId, Pageable pageable) {
-        return paymentInfoRepository.findByBillShare_UserFriendGroup_Group_Id(groupId, pageable);
-    }
-
-    public Page<PaymentInfoEntity> getAllPaymentInfosOfUser(Long userId, Pageable pageable) {
-        return paymentInfoRepository.findByBillShare_UserFriendGroup_User_Id(userId, pageable);
-    }
+  public Page<PaymentInfoEntity> getAllPaymentInfosOfUser(Long userId, Pageable pageable) {
+    return paymentInfoRepository.findByBillShare_UserFriendGroup_User_Id(userId, pageable);
+  }
 }

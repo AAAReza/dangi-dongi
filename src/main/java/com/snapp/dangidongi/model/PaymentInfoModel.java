@@ -10,13 +10,12 @@ import java.time.LocalDateTime;
 @Builder
 public class PaymentInfoModel {
 
-    private Long id;
-    private String trackId;
-    private BigDecimal amount;
-    private LocalDateTime paymentDate;
+  private Long id;
+  private String trackId;
+  private BigDecimal amount;
+  private LocalDateTime paymentDate;
 
-    private BillShareModel billShare;
+  private BillShareModel billShare;
 
-    private LocalDateTime creationTime;
-
+  private LocalDateTime creationTime;
 }

@@ -11,18 +11,18 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserDetailService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    public UserDetailService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  public UserDetailService(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-    @Override
-    public UserDetail loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("cannot find username: " + username));
-        return new UserDetail(user);
-    }
-
-
+  @Override
+  public UserDetail loadUserByUsername(String username) throws UsernameNotFoundException {
+    UserEntity user =
+        this.userRepository
+            .findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("cannot find username: " + username));
+    return new UserDetail(user);
+  }
 }
